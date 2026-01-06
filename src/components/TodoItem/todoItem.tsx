@@ -30,6 +30,7 @@ export const TodoItem: React.FC<Props> = ({
       <label className="todo__status-label">
         <input
           data-cy="TodoStatus"
+          title="Status"
           type="checkbox"
           checked={todo.completed}
           className="todo__status"

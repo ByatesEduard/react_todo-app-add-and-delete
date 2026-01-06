@@ -5,19 +5,20 @@ import { UserWarning } from './UserWarning';
 import { getTodos, USER_ID } from './api/todos';
 import { Todo } from './types/Todo';
 import { FilterEnum, Footer } from './components/Footer/footer';
-import { Error } from './components/Error/errorMessage';
-import { Header } from './components/Header/header';
-import { TodoItem } from './components/TodoItem/todoItem';
+import { Error } from './components/Error/ErrorMessage';
+import { Header } from './components/Header/Header';
+import { TodoItem } from './components/TodoItem/TodoItem';
 import * as todoService from './api/todos';
 
 export const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[] | null>(null);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [filter, setFilter] = useState<FilterEnum>(FilterEnum.all);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [filteredTodos, setFilteredTodos] = useState<Todo[] | null>(todos);
   const [isAdding, setIsAdding] = useState(false);
   const [title, setTitle] = useState('');
+  const [tempTodo, setTempTodo] = useState<Todo | null>(null);
 
   useEffect(() => {
     async function fetchTodos() {
@@ -77,7 +78,7 @@ export const App: React.FC = () => {
   function handleDeleteTodo(todoId: number) {
     setIsAdding(true);
     todoService
-      .deleteTodo(todoId)
+      .deletePost(todoId)
       .then(() => {
         setTodos(prev => prev.filter(todo => todo.id !== todoId));
       })
@@ -96,8 +97,8 @@ export const App: React.FC = () => {
       <div className="todoapp__content">
         <Header
           setTodos={setTodos}
-          setErrorMessage={setErrorMessage}
           setTempTodo={setTempTodo}
+          setErrorMessage={setErrorMessage}
           userId={USER_ID}
           setIsAdding={setIsAdding}
           setTitle={setTitle}
@@ -106,6 +107,15 @@ export const App: React.FC = () => {
         />
 
         <section className="todoapp__main" data-cy="TodoList">
+          {tempTodo && (
+            <TodoItem
+              key={tempTodo.id}
+              todo={tempTodo}
+              isLoaded={true}
+              toggleTodoCompleted={toggleTodoCompleted}
+              deleteTodo={handleDeleteTodo}
+            />
+          )}
           {filteredTodos?.map((todo: Todo) => (
             <TodoItem
               key={todo.id}

@@ -36,21 +36,20 @@ export const Header: React.FC<Props> = ({
       return;
     }
 
-    const tempTodo: Todo = {
+    setTempTodo({
       id: 0,
       title: trimmed,
       completed: false,
       userId,
-    };
+    });
 
-    setTempTodo(tempTodo);
     setIsAdding(true);
 
     todoService
-      .addTodo({
+      .addPost({
         title: trimmed,
-        userId,
         completed: false,
+        userId,
       })
       .then((newTodo: Todo) => {
         setTodos(prev => [...prev, newTodo]);
@@ -62,7 +61,9 @@ export const Header: React.FC<Props> = ({
       .finally(() => {
         setIsAdding(false);
         setTempTodo(null);
-        inputRef.current?.focus();
+        setTimeout(() => {
+          inputRef.current?.focus();
+        }, 0);
       });
   }
 
@@ -77,7 +78,7 @@ export const Header: React.FC<Props> = ({
           value={title}
           onChange={e => setTitle(e.target.value)}
           ref={inputRef}
-          disabled={isAdding}
+          readOnly={isAdding}
         />
       </form>
 
