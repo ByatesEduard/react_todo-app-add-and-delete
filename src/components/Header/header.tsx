@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Todo } from '../../types/Todo';
 import * as todoService from '../../api/todos';
 
@@ -66,6 +66,12 @@ export const Header: React.FC<Props> = ({
         }, 0);
       });
   }
+
+  useEffect(() => {
+    if (!isAdding) {
+      inputRef.current?.focus();
+    }
+  }, [isAdding]);
 
   return (
     <header className="todoapp__header">
