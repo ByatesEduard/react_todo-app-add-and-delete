@@ -54,10 +54,6 @@ export const App: React.FC = () => {
     }
   }, [filter, todos]);
 
-  if (!USER_ID) {
-    return <UserWarning />;
-  }
-
   function toggleTodoCompleted(todoId: number) {
     setTodos(prevTodos => {
       if (!prevTodos) {
@@ -94,43 +90,47 @@ export const App: React.FC = () => {
     <div className="todoapp">
       <h1 className="todoapp__title">todos</h1>
 
-      <div className="todoapp__content">
-        <Header
-          setTodos={setTodos}
-          setTempTodo={setTempTodo}
-          setErrorMessage={setErrorMessage}
-          userId={USER_ID}
-          setIsAdding={setIsAdding}
-          setTitle={setTitle}
-          title={title}
-          isAdding={isAdding}
-        />
+      {!USER_ID ? (
+        <UserWarning />
+      ) : (
+        <div className="todoapp__content">
+          <Header
+            setTodos={setTodos}
+            setTempTodo={setTempTodo}
+            setErrorMessage={setErrorMessage}
+            userId={USER_ID}
+            setIsAdding={setIsAdding}
+            setTitle={setTitle}
+            title={title}
+            isAdding={isAdding}
+          />
 
-        <section className="todoapp__main" data-cy="TodoList">
-          {tempTodo && (
-            <TodoItem
-              key={tempTodo.id}
-              todo={tempTodo}
-              isLoaded={true}
-              toggleTodoCompleted={toggleTodoCompleted}
-              deleteTodo={handleDeleteTodo}
-            />
+          <section className="todoapp__main" data-cy="TodoList">
+            {tempTodo && (
+              <TodoItem
+                key={tempTodo.id}
+                todo={tempTodo}
+                isLoaded={true}
+                toggleTodoCompleted={toggleTodoCompleted}
+                deleteTodo={handleDeleteTodo}
+              />
+            )}
+            {filteredTodos?.map((todo: Todo) => (
+              <TodoItem
+                key={todo.id}
+                todo={todo}
+                isLoaded={isLoaded}
+                deleteTodo={handleDeleteTodo}
+                toggleTodoCompleted={toggleTodoCompleted}
+              />
+            ))}
+          </section>
+
+          {todos && todos.length > 0 && (
+            <Footer todos={todos} filter={filter} setFilter={setFilter} />
           )}
-          {filteredTodos?.map((todo: Todo) => (
-            <TodoItem
-              key={todo.id}
-              todo={todo}
-              isLoaded={isLoaded}
-              deleteTodo={handleDeleteTodo}
-              toggleTodoCompleted={toggleTodoCompleted}
-            />
-          ))}
-        </section>
-
-        {todos && todos.length > 0 && (
-          <Footer todos={todos} filter={filter} setFilter={setFilter} />
-        )}
-      </div>
+        </div>
+      )}
 
       <Error errorMsg={errorMessage} />
     </div>
