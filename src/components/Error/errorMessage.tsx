@@ -14,7 +14,12 @@ export const Error: React.FC<Props> = ({ errorMsg }) => {
         { hidden: errorMsg === null },
       )}
     >
-      <button data-cy="HideErrorButton" type="button" className="delete" />
+      <button
+        data-cy="HideErrorButton"
+        type="button"
+        className="delete"
+        aria-label="Close"
+      />
       {errorMsg && errorMsg}
     </div>
   );
