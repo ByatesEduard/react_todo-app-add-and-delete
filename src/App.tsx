@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { UserWarning } from './UserWarning';
 import { getTodos, USER_ID } from './api/todos';
 import { Todo } from './types/Todo';
-import { FilterEnum, Footer } from './components/Footer/footer';
+import { FilterEnum, Footer } from './components/Footer/Footer';
 import { Header } from './components/Header/Header';
-import { Error } from './components/Error/errorMessage';
+import { Error } from './components/Error/ErrorMessage';
 import { TodoItem } from './components/TodoItem/TodoItem';
 import * as todoService from './api/todos';
 
